@@ -25,7 +25,15 @@ ARGV.each do |arg|
   if arg.match(/\A(last|la|l)\z/)
     cmd << lines[-1] << ' '
   elsif arg.match(/\A-?\d+\z/)
+    l =
+      lines[arg.to_i] ||
+      fail(ArgumentError.new("no spec at line #{arg}"))
     cmd << lines[arg.to_i] << ' '
+  elsif arg.match(/\A:\d+\z/)
+    l =
+      lines.find { |l| l.match(/\.rb#{arg}\z/) } ||
+      fail(ArgumentError.new("no spec matching #{arg}"))
+    cmd << l << ' '
   else
     cmd << arg << ' '
   end

@@ -14,6 +14,7 @@ if lines
     .collect(&:strip)
     .drop_while { |l| l != 'Failed examples:' } \
     [2..-2]
+  lines = lines && lines
     .collect { |l| l.gsub(/\x1b\[\d+(;\d+)?m/, '') }
     .collect { |l| l.match(/\Arspec ([^ ]+)/)[1] }
   #require 'pp'; pp lines

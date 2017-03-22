@@ -1,7 +1,9 @@
 
+SRCDIR =
+  File.dirname(__FILE__)
 BASE =
   %{ bundle exec rspec \
-       --require ~/.bash/rspec_dot_errors_formatter.rb \
+       --require #{File.join(SRCDIR, 'rspec_dot_errors_formatter.rb')} \
        --format DotErrorsFormatter --out .errors \
        --format d --out .rspec.out \
        --format d }

@@ -5,8 +5,8 @@ BASE =
   %{ bundle exec rspec \
        --require #{File.join(SRCDIR, 'rspec_dot_errors_formatter.rb')} \
        --format DotErrorsFormatter --out .errors \
-       --format d --out .rspec.out \
-       --format d }
+       --format documentation --out .rspec.out \
+       --format documentation }
 
 lines = (File.readlines('.rspec.out') rescue [])
 lines = nil if lines.empty?
@@ -43,5 +43,16 @@ ARGV.each do |arg|
 end
 
 #p cmd; exit 0
-exec(cmd)
+r = system(cmd)
+
+begin
+  File.open('.rspec.nocolor.out', 'wb') do |f|
+    File.readlines('.rspec.out').each do |l|
+      f.puts l.gsub(/\x1b\[\d+(;\d+)?m/, '')
+    end
+  end
+rescue
+end
+
+exit(r ? 0 : 1)
 

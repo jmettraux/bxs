@@ -7,7 +7,7 @@ if ARGV == %w[ read ] || ARGV == %w[ r ]
   exit 0
 end
 
-exec(bxsinfo[:cmd]) if ARGV == bxsinfo[:argv]
+#exec(bxsinfo[:cmd]) if ARGV == bxsinfo[:argv]
 
 SRCDIR =
   File.dirname(__FILE__)
@@ -20,43 +20,65 @@ BASE =
     "--format documentation "
   ].join(' ')
 
-lines = (File.readlines('.rspec.out') rescue [])
-lines = nil if lines.empty?
+lines =
+  (File.readlines('.rspec.out') rescue [])
+lines = lines
+  .collect(&:strip)
+  .drop_while { |l| l != 'Failed examples:' } \
+  [2..-2] || []
+lines = lines
+  .collect { |l| l.gsub(/\x1b\[\d+(;\d+)?m/, '') }
+  .collect { |l| l.match(/\Arspec ([^ ]+)/)[1] }
+#require 'pp'; pp lines
 
-if lines
-  lines = lines
-    .collect(&:strip)
-    .drop_while { |l| l != 'Failed examples:' } \
-    [2..-2]
-  lines = lines && lines
-    .collect { |l| l.gsub(/\x1b\[\d+(;\d+)?m/, '') }
-    .collect { |l| l.match(/\Arspec ([^ ]+)/)[1] }
-  #require 'pp'; pp lines
+index = bxsinfo[:index] || {}; lines.each_with_index do |l, i|
+  fn, ln = l.split(':')
+  p [ fn, ln ]
+  index[":#{ln}"] = l
+  index[i] = l
+  index[File.basename(fn, '.rb')[0..-6]] = fn
 end
 
+fnames = index
+  .select { |k, v| k.is_a?(String) && ! k.match(/\A:/) }
+#require 'pp'; pp index
+
+
 cmd = BASE
+parg = nil
 
 ARGV.each do |arg|
-  if arg.match(/\A(last|la|l)\z/)
-    cmd << lines[-1] << ' '
-  elsif arg.match(/\A-?\d+\z/)
-    l =
+  cmd <<
+    if (parg && parg.match(/\A-[a-z]/)) || arg.match(/\A-[a-z]/)
+      arg
+    elsif arg.match(/\Aspec\//)
+      arg
+    elsif arg.match(/\A(last|la|l)\z/)
+      lines[-1] ||
+      fail(ArgumentError.new("no last spec"))
+    elsif arg.match(/\A\d+\z/)
+      index[arg.to_i] ||
+      fail(ArgumentError.new("no spec ##{arg}"))
+    elsif arg.match(/\A-\d+\z/)
       lines[arg.to_i] ||
-      fail(ArgumentError.new("no spec at line #{arg}"))
-    cmd << lines[arg.to_i] << ' '
-  elsif arg.match(/\A:\d+\z/)
-    l =
-      lines.find { |l| l.match(/\.rb#{arg}\z/) } ||
+      fail(ArgumentError.new("no spec ##{arg}"))
+    elsif arg.match(/\A:\d+\z/)
+      index[arg] ||
       fail(ArgumentError.new("no spec matching #{arg}"))
-    cmd << l << ' '
-  else
-    cmd << arg << ' '
-  end
+    else
+      (
+        fnames.find { |k, v| k == arg } ||
+        fnames.find { |k, v| k.index(arg) } ||
+        fail(ArgumentError.new("no spec fname matching #{arg}"))
+      )[1]
+    end << ' '
+  parg = arg
 end
 
 bxsinfo[:argv] = ARGV
 bxsinfo[:cmd] = cmd
 bxsinfo[:lines] = lines
+bxsinfo[:index] = index
 #require 'pp'; pp bxsinfo
 File.open('.bxsinfo', 'wb') { |f| f.write(Marshal.dump(bxsinfo)) }
 

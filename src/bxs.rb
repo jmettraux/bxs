@@ -43,16 +43,5 @@ ARGV.each do |arg|
 end
 
 #p cmd; exit 0
-r = system(cmd)
-
-begin
-  File.open('.rspec.nocolor.out', 'wb') do |f|
-    File.readlines('.rspec.out').each do |l|
-      f.puts l.gsub(/\x1b\[\d+(;\d+)?m/, '')
-    end
-  end
-rescue
-end
-
-exit(r ? 0 : 1)
+exec(cmd)
 

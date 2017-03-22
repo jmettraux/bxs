@@ -33,7 +33,6 @@ lines = lines
 
 index = bxsinfo[:index] || {}; lines.each_with_index do |l, i|
   fn, ln = l.split(':')
-  p [ fn, ln ]
   index[":#{ln}"] = l
   index[i] = l
   index[File.basename(fn, '.rb')[0..-6]] = fn

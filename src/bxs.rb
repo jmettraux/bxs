@@ -1,4 +1,14 @@
 
+bxsinfo = (Marshal.load(File.read('.bxsinfo')) rescue nil) || {}
+#require 'pp'; pp bxsinfo
+
+if ARGV == %w[ read ] || ARGV == %w[ r ]
+  require 'pp'; pp bxsinfo
+  exit 0
+end
+
+exec(bxsinfo[:cmd]) if ARGV == bxsinfo[:argv]
+
 SRCDIR =
   File.dirname(__FILE__)
 BASE =
@@ -41,6 +51,12 @@ ARGV.each do |arg|
     cmd << arg << ' '
   end
 end
+
+bxsinfo[:argv] = ARGV
+bxsinfo[:cmd] = cmd
+bxsinfo[:lines] = lines
+#require 'pp'; pp bxsinfo
+File.open('.bxsinfo', 'wb') { |f| f.write(Marshal.dump(bxsinfo)) }
 
 #p cmd; exit 0
 exec(cmd)

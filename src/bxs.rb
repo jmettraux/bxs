@@ -30,7 +30,7 @@ lines = lines
   [2..-1] || []
 lines = lines
   .collect { |l| l.gsub(/\x1b\[\d+(;\d+)?m/, '') }
-  .collect { |l| l.match(/\Arspec ([^ ]+)/)[1] }
+  .inject([]) { |a, l| m = l.match(/\Arspec ([^ ]+)/); a << m[1] if m; a }
 #puts "-" * 80; pp lines; puts "-" * 80
 
 index = bxsinfo[:index] || {}; lines.each_with_index do |l, i|

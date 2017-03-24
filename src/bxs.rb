@@ -1,9 +1,11 @@
 
+require 'pp'
+
 bxsinfo = (Marshal.load(File.read('.bxsinfo')) rescue nil) || {}
 #require 'pp'; pp bxsinfo
 
 if ARGV == %w[ read ] || ARGV == %w[ r ]
-  require 'pp'; pp bxsinfo
+  pp bxsinfo
   exit 0
 end
 
@@ -25,11 +27,11 @@ lines =
 lines = lines
   .collect(&:strip)
   .drop_while { |l| l != 'Failed examples:' } \
-  [2..-2] || []
+  [2..-1] || []
 lines = lines
   .collect { |l| l.gsub(/\x1b\[\d+(;\d+)?m/, '') }
   .collect { |l| l.match(/\Arspec ([^ ]+)/)[1] }
-#require 'pp'; pp lines
+#puts "-" * 80; pp lines; puts "-" * 80
 
 index = bxsinfo[:index] || {}; lines.each_with_index do |l, i|
   fn, ln = l.split(':')
@@ -40,7 +42,7 @@ end
 
 fnames = index
   .select { |k, v| k.is_a?(String) && ! k.match(/\A:/) }
-#require 'pp'; pp index
+#pp index
 
 
 cmd = BASE
@@ -78,9 +80,9 @@ bxsinfo[:argv] = ARGV
 bxsinfo[:cmd] = cmd
 bxsinfo[:lines] = lines
 bxsinfo[:index] = index
-#require 'pp'; pp bxsinfo
+#pp bxsinfo
 File.open('.bxsinfo', 'wb') { |f| f.write(Marshal.dump(bxsinfo)) }
 
-#p cmd; exit 0
+puts(cmd)
 exec(cmd)
 

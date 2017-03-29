@@ -14,6 +14,10 @@ if %w[ index i ].find { |e| ARGV == [ e ] }
   end
   exit 0
 end
+#if %w[ f ].find { |e| ARGV == [ e ] }
+#  pp bxsinfo[:file]
+#  exit 0
+#end
 
 #exec(bxsinfo[:cmd]) if ARGV == bxsinfo[:argv]
 
@@ -72,6 +76,9 @@ ARGV.each do |arg|
     elsif arg.match(/\A:\d+\z/)
       index[arg] ||
       fail(ArgumentError.new("no spec matching #{arg}"))
+    elsif arg == 'f'
+      bxsinfo[:file] ||
+      fail(ArgumentError.new("no particular spec file"))
     else
       (
         fnames.find { |k, v| k == arg } ||
@@ -82,8 +89,12 @@ ARGV.each do |arg|
   parg = arg
 end
 
+file = cmd.split.select { |w| w.match(/\A\.\/spec\//) }.last
+file = file.split(':').first if file
+
 bxsinfo[:argv] = ARGV
 bxsinfo[:cmd] = cmd
+bxsinfo[:file] = file
 bxsinfo[:lines] = lines
 bxsinfo[:index] = index
 #pp bxsinfo

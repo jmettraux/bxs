@@ -2,10 +2,16 @@
 require 'pp'
 
 bxsinfo = (Marshal.load(File.read('.bxsinfo')) rescue nil) || {}
-#require 'pp'; pp bxsinfo
 
-if ARGV == %w[ read ] || ARGV == %w[ r ]
+if %w[ read r ].find { |e| ARGV == [ e ] }
   pp bxsinfo
+  exit 0
+end
+if %w[ index i ].find { |e| ARGV == [ e ] }
+  lim = bxsinfo[:lines].size; lim = 14 if lim > 14
+  (0..lim).each do |i|
+    puts "%2d - %s" % [ i, bxsinfo[:index][i] ]
+  end
   exit 0
 end
 

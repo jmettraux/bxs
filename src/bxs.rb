@@ -28,7 +28,8 @@ BASE =
     "bundle exec rspec",
     "--require #{File.join(SRCDIR, 'rspec_dot_errors_formatter.rb')}",
     "--format DotErrorsFormatter --out .errors",
-    "--format documentation --out .rspec.out",
+    #"--format documentation --out .rspec.out",
+    "--color --tty",
     "--format documentation "
   ].join(' ')
 
@@ -99,6 +100,8 @@ bxsinfo[:lines] = lines
 bxsinfo[:index] = index
 #pp bxsinfo
 File.open('.bxsinfo', 'wb') { |f| f.write(Marshal.dump(bxsinfo)) }
+
+cmd += ' 2>&1 | tee .rspec.out'
 
 puts(cmd)
 exec(cmd)

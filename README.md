@@ -24,6 +24,13 @@ bxs 0     # ---> will run bundle exec rspec ./spec/eo_time_spec.rb:540
 bxs -1    # ---> will run bundle exec rspec ./spec/eo_time_spec.rb:582
 bxs 0 -1  # ---> will run both first and last faulty spec
 bxs :540  # ---> will run bundle exec rspec ./spec/eo_time_spec.rb:540
+
+bxs i     # ---> will list the current indexes (the list of shortcuts)
+```
+
+There is also
+```
+bxs r   # ---> reads the while .bxsinfo data and pretty prints it
 ```
 
 

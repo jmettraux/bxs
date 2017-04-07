@@ -14,6 +14,14 @@ if %w[ index i ].find { |e| ARGV == [ e ] }
   end
   exit 0
 end
+if %w[ all a ].find { |e| ARGV == [ e ] }
+  lim = bxsinfo[:lines].size; lim = 14 if lim > 14
+  (0..28).each do |i|
+    dash = i <= lim ? '=' : '-'
+    puts "%2d %s %s" % [ i, dash, bxsinfo[:index][i] ]
+  end
+  exit 0
+end
 #if %w[ f ].find { |e| ARGV == [ e ] }
 #  pp bxsinfo[:file]
 #  exit 0

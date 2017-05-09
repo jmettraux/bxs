@@ -2,7 +2,7 @@
 require 'pp'
 require 'yaml'
 
-bxsinfo = (Marshal.load(File.read('.bxsinfo')) rescue nil) || {}
+bxsinfo = (YAML.load(File.read('.bxsinfo.yaml')) rescue nil) || {}
 bxsenvs = (YAML.load(File.read('.bxsenvs.yaml')) rescue nil) || {}
 
 if %w[ read r ].find { |e| ARGV == [ e ] }
@@ -112,7 +112,7 @@ bxsinfo[:file] = file
 bxsinfo[:lines] = lines
 bxsinfo[:index] = index
 #pp bxsinfo
-File.open('.bxsinfo', 'wb') { |f| f.write(Marshal.dump(bxsinfo)) }
+File.open('.bxsinfo.yaml', 'wb') { |f| f.write(YAML.dump(bxsinfo)) }
 
 cmd += ' 2>&1 | tee .rspec.out'
 

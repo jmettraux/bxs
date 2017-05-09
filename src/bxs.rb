@@ -1,7 +1,9 @@
 
 require 'pp'
+require 'yaml'
 
 bxsinfo = (Marshal.load(File.read('.bxsinfo')) rescue nil) || {}
+bxsenvs = (YAML.load(File.read('.bxsenvs.yaml')) rescue nil) || {}
 
 if %w[ read r ].find { |e| ARGV == [ e ] }
   pp bxsinfo
@@ -88,6 +90,8 @@ ARGV.each do |arg|
     elsif arg == 'f'
       bxsinfo[:file] ||
       fail(ArgumentError.new("no particular spec file"))
+    elsif bxsenvs[arg]
+      ''
     else
       (
         fnames.find { |k, v| k == arg } ||
@@ -95,6 +99,7 @@ ARGV.each do |arg|
         fail(ArgumentError.new("no spec fname matching #{arg}"))
       )[1]
     end << ' '
+  if e = bxsenvs[arg]; cmd = e << ' ' << cmd; end
   parg = arg
 end
 

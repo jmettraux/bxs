@@ -1,5 +1,4 @@
 
-
 RUBY=`find ~/.rubies -name "ruby" | grep ruby-2 | grep bin/ruby | head -1`
 SELF=`readlink $BASH_SOURCE`
 

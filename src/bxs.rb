@@ -73,7 +73,7 @@ ARGV.each do |arg|
   cmd <<
     if (parg && parg.match(/\A-[a-z]/)) || arg.match(/\A-[a-z]/)
       arg
-    elsif arg.match(/\Aspec\//)
+    elsif arg.match(/\A(\.\/)?spec\//)
       arg
     elsif arg.match(/\A(last|la|l)\z/)
       lines[-1] ||

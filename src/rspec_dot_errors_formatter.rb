@@ -17,7 +17,7 @@ class DotErrorsFormatter
 
       fn.formatted_backtrace.each do |l|
 
-        if m = l.match(/\A([^:]+_spec\.rb:\d+)/)
+        if m = l.match(/[^:()]+_spec\.rb:\d+/)
           spe ||= m
         elsif m = l.match(/\A(\.\/lib\/.+\.rb:\d+)/)
           lib ||= m

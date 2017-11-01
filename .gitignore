@@ -1,0 +1,8 @@
+
+.rspec.out
+
+*.swp
+
+.vimrc
+.viminfo
+

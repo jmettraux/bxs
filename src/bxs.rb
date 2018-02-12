@@ -24,6 +24,14 @@ if %w[ all a ].find { |e| ARGV == [ e ] }
   end
   exit 0
 end
+if %w[ paths ].find { |e| ARGV == [ e ] }
+  puts bxsinfo[:index]
+    .select { |k, v| k.is_a?(Integer) }
+    .values
+    .uniq
+    .take(1)
+  exit 0
+end
 #if %w[ f ].find { |e| ARGV == [ e ] }
 #  pp bxsinfo[:file]
 #  exit 0

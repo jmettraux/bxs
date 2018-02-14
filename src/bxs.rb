@@ -79,7 +79,7 @@ parg = nil
 
 ARGV.each do |arg|
   cmd <<
-    if (parg && parg.match(/\A-[a-z]/)) || arg.match(/\A-[a-z]/)
+    if (parg && parg.match(/\A--?[a-z]/)) || arg.match(/\A--?[a-z]/)
       arg
     elsif arg.match(/\A(\.\/)?spec\//)
       arg

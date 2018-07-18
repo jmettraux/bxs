@@ -10,5 +10,6 @@ SELF=`readlink $BASH_SOURCE`
 
 #source $SELF.bash
 
-$RUBY $SELF.rb $*
+#$RUBY $SELF.rb $*
+$RUBY $SELF.rb "$@"
 

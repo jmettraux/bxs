@@ -2,6 +2,10 @@
 require 'pp'
 require 'yaml'
 
+#puts "v" * 80
+#pp ARGV
+#puts "^" * 80
+
 bxsinfo = (YAML.load(File.read('.bxsinfo.yaml')) rescue nil) || {}
 bxsenvs = (YAML.load(File.read('.bxsenvs.yaml')) rescue nil) || {}
 
@@ -44,6 +48,7 @@ SRCDIR =
 BASE =
   [
     "bundle exec rspec",
+    #"jruby -J-Xmx5012m -S bundle exec rspec",
     "--require #{File.join(SRCDIR, 'rspec_dot_errors_formatter.rb')}",
     "--format DotErrorsFormatter --out .errors",
     #"--format documentation --out .rspec.out",
@@ -80,7 +85,7 @@ parg = nil
 ARGV.each do |arg|
   cmd <<
     if (parg && parg.match(/\A--?[a-z]/)) || arg.match(/\A--?[a-z]/)
-      arg
+      arg.index(' ') ? arg.inspect : arg
     elsif arg.match(/\A(\.\/)?spec\//)
       arg
     elsif arg.match(/\A(last|la|l)\z/)

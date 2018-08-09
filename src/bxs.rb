@@ -83,8 +83,12 @@ cmd = BASE
 parg = nil
 
 ARGV.each do |arg|
+  narg = arg
   cmd <<
-    if (parg && parg.match(/\A--?[a-z]/)) || arg.match(/\A--?[a-z]/)
+    if %w[ -w ].include?(arg)
+      narg = nil
+      arg
+    elsif (parg && parg.match(/\A--?[a-z]/)) || arg.match(/\A--?[a-z]/)
       arg.index(' ') ? arg.inspect : arg
     elsif arg.match(/\A(\.\/)?spec\//)
       arg
@@ -113,7 +117,7 @@ ARGV.each do |arg|
       )[1]
     end << ' '
   if e = bxsenvs[arg]; cmd = e << ' ' << cmd; end
-  parg = arg
+  parg = narg
 end
 
 file = cmd.split.select { |w| w.match(/\A\.\/spec\//) }.last

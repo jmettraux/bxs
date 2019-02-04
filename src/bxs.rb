@@ -49,6 +49,7 @@ BASE =
   [
     "bundle exec rspec",
     #"jruby -J-Xmx5012m -S bundle exec rspec",
+    "-I .",
     "--require #{File.join(SRCDIR, 'rspec_dot_errors_formatter.rb')}",
     "--format DotErrorsFormatter --out .errors",
     #"--format documentation --out .rspec.out",

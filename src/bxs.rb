@@ -91,6 +91,8 @@ ARGV.each do |arg|
       arg
     elsif (parg && parg.match(/\A--?[a-z]/)) || arg.match(/\A--?[a-z]/)
       arg.index(' ') ? arg.inspect : arg
+    elsif arg == '.'
+      File.read('.vimspec').strip
     elsif arg.match(/\A(\.\/)?spec\//)
       arg
     elsif arg.match(/\A(last|la|l)\z/)

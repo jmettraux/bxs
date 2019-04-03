@@ -24,7 +24,8 @@ if %w[ all a ].find { |e| ARGV == [ e ] }
   lim = bxsinfo[:lines].size; lim = 14 if lim > 14
   (0..28).each do |i|
     dash = i <= lim ? '=' : '-'
-    puts "%2d %s %s" % [ i, dash, bxsinfo[:index][i] ]
+    v = bxsinfo[:index][i]; break unless v
+    puts "%2d %s %s" % [ i, dash, v ]
   end
   exit 0
 end

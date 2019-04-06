@@ -2,6 +2,10 @@
 require 'pp'
 require 'yaml'
 
+puts
+puts `ruby -v`
+puts
+
 #puts "v" * 80
 #pp ARGV
 #puts "^" * 80

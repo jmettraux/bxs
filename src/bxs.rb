@@ -10,6 +10,15 @@ puts
 #pp ARGV
 #puts "^" * 80
 
+
+def re_encode_to_utf8(s)
+  (s.valid_encoding? ?
+    s :
+    s.encode('UTF-16be', invalid: :replace, replace: '?')
+  ).encode('UTF-8')
+end
+
+
 bxsinfo = (YAML.load(File.read('.bxsinfo.yaml')) rescue nil) || {}
 bxsenvs = (YAML.load(File.read('.bxsenvs.yaml')) rescue nil) || {}
 
@@ -65,7 +74,7 @@ BASE =
 lines =
   (File.readlines('.rspec.out') rescue [])
 lines = lines
-  .collect(&:strip)
+  .collect { |l| re_encode_to_utf8(l).strip }
   .drop_while { |l| l != 'Failed examples:' } \
   [2..-1] || []
 lines = lines

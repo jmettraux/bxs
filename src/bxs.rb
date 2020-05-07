@@ -19,6 +19,11 @@ def re_encode_to_utf8(s)
 end
 
 
+bxspre =
+  (File.readlines('.bxspre')
+    .find { |l| l.strip.length > 0 && ! l.match(/^\s*#/) }
+    .strip rescue nil)
+
 bxsinfo = (YAML.load(File.read('.bxsinfo.yaml')) rescue nil) || {}
 bxsenvs = (YAML.load(File.read('.bxsenvs.yaml')) rescue nil) || {}
 
@@ -60,16 +65,17 @@ end
 SRCDIR =
   File.dirname(__FILE__)
 BASE =
-  [
-    "bundle exec rspec",
+  [ bxspre,
+    'bundle exec rspec',
     #"jruby -J-Xmx5012m -S bundle exec rspec",
-    "-I .",
+    '-I .',
     "--require #{File.join(SRCDIR, 'rspec_dot_errors_formatter.rb')}",
-    "--format DotErrorsFormatter --out .errors",
-    #"--format documentation --out .rspec.out",
-    "--color --tty",
-    "--format documentation "
-  ].join(' ')
+    '--format DotErrorsFormatter --out .errors',
+    #'--format documentation --out .rspec.out',
+    '--color --tty',
+    '--format documentation ' ]
+      .compact
+      .join(' ')
 
 lines =
   (File.readlines('.rspec.out') rescue [])

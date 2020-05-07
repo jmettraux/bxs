@@ -42,6 +42,18 @@ bin $ ln -s ~/work/bxs/src/bxs
 ```
 
 
+## .bxspre
+
+For example:
+```
+# let's max the heap size
+jruby -J-Xms512m -J-Xmx512m -S
+```
+
+If this `.bxspre` file is present, its first non-comment non-empty line gets added before `bundle exec rspec ...` when calling `bxs`.
+
+
+
 ## license
 
 MIT, see [LICENSE.txt](LICENSE.txt)

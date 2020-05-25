@@ -7,6 +7,12 @@
 #
 
 RUBY=`find ~/.rubies -name "ruby" | grep ruby-2 | grep bin/ruby | head -1`
+
+if [ -z "$RUBY" ]; then
+  >&2 echo "found no Ruby 2.x under ~/.rubies..."
+  exit 1
+fi
+
 SELF=`readlink $0`
 
 #$RUBY $SELF.rb $*

@@ -24,6 +24,8 @@ bxspre =
     .find { |l| l.strip.length > 0 && ! l.match(/^\s*#/) }
     .strip rescue nil)
 
+rspec = File.exist?('.Gemfile') ? 'bundle exec rspec' : 'rspec'
+
 bxsinfo = (YAML.load(File.read('.bxsinfo.yaml')) rescue nil) || {}
 bxsenvs = (YAML.load(File.read('.bxsenvs.yaml')) rescue nil) || {}
 
@@ -66,8 +68,7 @@ SRCDIR =
   File.dirname(__FILE__)
 BASE =
   [ bxspre,
-    'bundle exec rspec',
-    #"jruby -J-Xmx5012m -S bundle exec rspec",
+    rspec,
     '-I .',
     "--require #{File.join(SRCDIR, 'rspec_dot_errors_formatter.rb')}",
     '--format DotErrorsFormatter --out .errors',

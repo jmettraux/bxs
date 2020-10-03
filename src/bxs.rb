@@ -24,7 +24,7 @@ bxspre =
     .find { |l| l.strip.length > 0 && ! l.match(/^\s*#/) }
     .strip rescue nil)
 
-rspec = File.exist?('.Gemfile') ? 'bundle exec rspec' : 'rspec'
+rspec = File.exist?('Gemfile') ? 'bundle exec rspec' : 'rspec'
 
 bxsinfo = (YAML.load(File.read('.bxsinfo.yaml')) rescue nil) || {}
 bxsenvs = (YAML.load(File.read('.bxsenvs.yaml')) rescue nil) || {}

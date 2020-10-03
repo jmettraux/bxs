@@ -2,14 +2,29 @@
 require 'pp'
 require 'yaml'
 
-puts
+#
+# some colours
+
+#yc = "[0;33m" # yellow
+gc = "[0;90m" # grey
+rc =  "[0;0m" # reset
+
+
+#
+# versions
+
+puts gc
 puts `ruby -v`
-puts
+puts `bundle -v`
+puts rc
 
 #puts "v" * 80
 #pp ARGV
 #puts "^" * 80
 
+
+#
+# invocations
 
 def re_encode_to_utf8(s)
   (s.valid_encoding? ?

@@ -131,7 +131,7 @@ ARGV.each do |arg|
       File.read('.vimspec').strip
     elsif arg.match(/\A(file|fi|f)\z/)
       File.read('.vimspec').strip.split(':').first
-    elsif arg.match(/\A(\.\/)?spec\//)
+    elsif arg.match(/\A(\.\/)?spec(\/|$)/)
       arg
     elsif arg.match(/\A(last|la|l)\z/)
       lines[-1] ||

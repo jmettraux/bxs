@@ -160,6 +160,10 @@ ARGV.each do |arg|
   if e = bxsenvs[arg]; cmd = e << ' ' << cmd; end
   parg = narg
 end
+  #
+#cmd << Dir['spec/**/*_spec.rb'].join(' ') if ARGV.empty?
+  #
+  # no worky... still ignores my spec/xxx/yyy/*_spec.rb files...
 
 file = cmd.split.select { |w| w.match(/\A\.\/spec\//) }.last
 file = file.split(':').first if file

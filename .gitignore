@@ -3,8 +3,7 @@
 
 *.swp
 
-.vimrc
-.viminfo
+.vim*
 
 .todo.md
 

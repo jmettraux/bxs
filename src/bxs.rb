@@ -164,6 +164,17 @@ end
 #cmd << Dir['spec/**/*_spec.rb'].join(' ') if ARGV.empty?
   #
   # no worky... still ignores my spec/xxx/yyy/*_spec.rb files...
+  #
+#cmd << Dir['spec/**/*'].select { |e| File.directory?(e) }.join(' ') \
+#  if ARGV.empty?
+  #
+cmd << Dir['spec/**/*_spec.rb']
+  .collect { |e| File.dirname(e) + '/' }
+  .uniq
+  .sort
+  .reverse
+  .join(' ') \
+    if ARGV.empty?
 
 file = cmd.split.select { |w| w.match(/\A\.\/spec\//) }.last
 file = file.split(':').first if file
